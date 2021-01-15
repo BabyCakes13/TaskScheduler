@@ -4,4 +4,10 @@
   <actor host="Ginette" function="task">
     <argument value="100"/>
   </actor>
+  <actor host="Ginette" function="task">
+    <argument value="1000000"/>
+  </actor>
+  <actor host="Ginette" function="task">
+    <argument value="1"/>
+  </actor>
 </platform>
