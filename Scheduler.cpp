@@ -25,7 +25,9 @@ void Scheduler::startTaskOnVM(Task task, s4u_Host* host) {
 
   vm->start();
   simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm, task);
-  // simgrid::s4u::this_actor::sleep_for(1); // TODO FIX THIS.
+  // TODO Sleep if workaround because host load is not updated fast enough for the next task.
+  // Therefore, the scheduler cannot actually load ballance.
+  simgrid::s4u::this_actor::sleep_for(0.1);
 }
 
 // void Scheduler::waitTaskOnVM() {
