@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
   e.load_deployment("tasks.xml");
   e.run();
   XBT_INFO("Total Simulation time %f", e.get_clock());
-  
+
   return 0;
 }
 
