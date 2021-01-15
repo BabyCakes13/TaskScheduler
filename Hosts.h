@@ -2,7 +2,6 @@
 #define HOSTS_H
 
 #include <vector>
-#include "Resource.h"
 #include <simgrid/s4u.hpp>
 
 class Hosts {

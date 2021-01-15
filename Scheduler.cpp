@@ -14,11 +14,15 @@ void Scheduler::scheduleTask(Task task) {
 
     s4u_Host* host = hosts.get(0);
 
-    auto* vm0 = new simgrid::s4u::VirtualMachine(std::to_string(task.id()) + "_vm", host, 1);
-    vm0->start();
-    simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm0, task);
-    actor->join();
-    vm0->destroy();
+    startTaskOnVM(task, host);
+}
+
+void Scheduler::startTaskOnVM(Task task, s4u_Host* host) {
+  auto* vm = new simgrid::s4u::VirtualMachine(std::to_string(task.id()) + "_vm", host, 1);
+  vm->start();
+  simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm, task);
+  actor->join();
+  vm->destroy();
 }
 
 Scheduler* Scheduler::getScheduler() {

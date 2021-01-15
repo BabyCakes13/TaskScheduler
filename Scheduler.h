@@ -11,7 +11,7 @@ public:
   void scheduleTask(Task task);
 private:
   static Scheduler* scheduler;
-  // Scheduler() {}
+  void startTaskOnVM(Task task, s4u_Host* host);
   Scheduler(Hosts& hosts) : hosts(hosts) {}
   Hosts hosts;
 };
