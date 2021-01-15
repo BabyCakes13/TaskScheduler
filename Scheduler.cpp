@@ -9,21 +9,29 @@ XBT_LOG_EXTERNAL_DEFAULT_CATEGORY(logger);
 Scheduler* Scheduler::scheduler = nullptr;
 
 void Scheduler::scheduleTask(Task task) {
-    XBT_INFO("Start scheduling task %d with computation amount %d",
+    XBT_INFO("Start scheduling task %d with computation amount %f",
              task.id(), task.computationCost());
 
-    s4u_Host* host = hosts.get(0);
+    s4u_Host* host = hosts.getLightestHost();
 
     startTaskOnVM(task, host);
+
+    hosts.print();
 }
 
 void Scheduler::startTaskOnVM(Task task, s4u_Host* host) {
   auto* vm = new simgrid::s4u::VirtualMachine(std::to_string(task.id()) + "_vm", host, 1);
+  XBT_INFO("Assigned host %s to task %d", host->get_name().c_str(), task.id());
+
   vm->start();
   simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm, task);
-  actor->join();
-  vm->destroy();
+  // simgrid::s4u::this_actor::sleep_for(1); // TODO FIX THIS.
 }
+
+// void Scheduler::waitTaskOnVM() {
+//   actor->join();
+//   vm->destroy();
+// }
 
 Scheduler* Scheduler::getScheduler() {
   if(scheduler == nullptr) {

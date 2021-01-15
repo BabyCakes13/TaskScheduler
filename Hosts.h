@@ -15,6 +15,7 @@ public:
   simgrid::s4u::Host* get(int index) {
     return hosts[index];
   }
+  simgrid::s4u::Host* getLightestHost();
   void print();
 };
 

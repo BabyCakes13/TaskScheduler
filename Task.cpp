@@ -16,9 +16,9 @@ Task::Task(std::vector<std::string> args)
 
 void Task::operator()() const
 {
-  XBT_INFO("Start executing task %d with computation amount %d", id_, computationCost_);
+  // XBT_INFO("Start executing task %d with computation amount %d", id_, computationCost_);
   double clock_sta = simgrid::s4u::Engine::get_clock();
   simgrid::s4u::this_actor::execute(computationCost_);
   double clock_end = simgrid::s4u::Engine::get_clock();
-  XBT_INFO("Done task %d in %f seconds.", id_, clock_end - clock_sta);
+  // XBT_INFO("Done task %d in %f seconds.", id_, clock_end - clock_sta);
 }
