@@ -13,15 +13,23 @@ typedef enum taskState {
 class Task {
 public:
   Task() = default; /* Sending the default message */
-  Task(const int& computationCost) : computationCost(computationCost){
-    id = rand();
+  Task(const int& computationCost) : computationCost_(computationCost){
+    id_ = rand();
   }
   Task(std::vector<std::string> args);
   void operator()() const;
 
+  int id() {
+    return id_;
+  }
+
+  int computationCost() {
+    return computationCost_;
+  }
+
 private:
-  int id=0;
-  int computationCost;
+  int id_=0;
+  int computationCost_;
   taskState state;
 };
 

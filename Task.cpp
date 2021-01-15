@@ -10,15 +10,15 @@ Task::Task(std::vector<std::string> args)
   xbt_assert(args.size() >= 2, "The sender is expecting 1 parameter from the deployment file but got %zu",
              args.size() - 1);
   std::stringstream ct(args[1]);
-  ct >> computationCost;
-  id = rand();
+  ct >> computationCost_;
+  id_ = rand();
 }
 
 void Task::operator()() const
 {
-  XBT_INFO("Start executing task %d with computation amount %d", id, computationCost);
+  XBT_INFO("Start executing task %d with computation amount %d", id_, computationCost_);
   double clock_sta = simgrid::s4u::Engine::get_clock();
-  simgrid::s4u::this_actor::execute(computationCost);
+  simgrid::s4u::this_actor::execute(computationCost_);
   double clock_end = simgrid::s4u::Engine::get_clock();
-  XBT_INFO("Done task %d in %f seconds.", id, clock_end - clock_sta);
+  XBT_INFO("Done task %d in %f seconds.", id_, clock_end - clock_sta);
 }

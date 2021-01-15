@@ -22,26 +22,47 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
+#include <iostream>
 #include "Task.h"
+#include "Scheduler.h"
 #include "Hosts.h"
 
 XBT_LOG_NEW_DEFAULT_CATEGORY(logger, "The logging channel used in this example.");
 
 static void master_main();
 
-/* Here comes the main function of your program */
-int main(int argc, char** argv) {
-  simgrid::s4u::Engine e(&argc, argv);
-  e.load_platform("small_platform.xml");
-  simgrid::s4u::Actor::create("master_", simgrid::s4u::Host::by_name("Fafard"), master_main);
-  e.run();
-  XBT_INFO("Total Simulation time %f", e.get_clock());
+static int task_create(int argc, char** argv){
+  auto task = Task(atoi(argv[1]));
+  std::cout << "Task is " << argv[0] << "  " << argv[1] << "\n";
 
-  Hosts hosts = Hosts(e);
-  hosts.print();
+  Scheduler* scheduler = Scheduler::getScheduler();
+  if (scheduler == nullptr) {
+    return 1;
+  }
+  scheduler->scheduleTask(task);
 
   return 0;
 }
+
+/* Here comes the main function of your program */
+int main(int argc, char** argv) {
+  simgrid::s4u::Engine e(&argc, argv);
+
+  e.load_platform("small_platform.xml");
+
+  Hosts hosts(e);
+  hosts.print();
+  Scheduler::initializeScheduler(hosts);
+
+  simgrid::s4u::Actor::create("master_", simgrid::s4u::Host::by_name("master"), master_main);
+  e.register_function("task_create", &task_create);
+  e.load_deployment("tasks.xml");
+  e.run();
+  XBT_INFO("Total Simulation time %f", e.get_clock());
+  
+  return 0;
+}
+
 
 static void master_main()
 {
@@ -49,6 +70,7 @@ static void master_main()
   auto task = Task(99999999);
 
   auto* vm0 = new simgrid::s4u::VirtualMachine("VM0", pm0, 1);
+
   vm0->start();
   simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm0, task);
   actor->join();

@@ -1,13 +1,13 @@
 <?xml version='1.0'?>
 <!DOCTYPE platform SYSTEM "https://simgrid.org/simgrid.dtd">
 <platform version="4.1">
-  <actor host="Ginette" function="task">
+  <actor host="master" function="task_create">
     <argument value="100"/>
   </actor>
-  <actor host="Ginette" function="task">
+  <actor host="master" function="task_create">
     <argument value="1000000"/>
   </actor>
-  <actor host="Ginette" function="task">
+  <actor host="master" function="task_create">
     <argument value="1"/>
   </actor>
 </platform>
