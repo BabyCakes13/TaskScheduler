@@ -22,40 +22,9 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
+#include "Task.h"
 
-// This declares a logging channel so that XBT_INFO can be used later
 XBT_LOG_NEW_DEFAULT_CATEGORY(logger, "The logging channel used in this example.");
-
-class Task {
-private:
-  int computationCost;
-  int taskId=0;
-public:
-  explicit Task() = default; /* Sending the default message */
-  explicit Task(const int& computationCost) : computationCost(computationCost){
-    taskId = rand();
-  }
-  explicit Task(std::vector<std::string> args)
-  {
-    /* This constructor is used when we start the actor from the deployment file */
-    /* args[0] is the actor's name, so the first parameter is args[1] */
-
-    xbt_assert(args.size() >= 2, "The sender is expecting 1 parameter from the deployment file but got %zu",
-               args.size() - 1);
-    std::stringstream ct(args[1]);
-    ct >> computationCost;
-    taskId = rand();
-  }
-
-  void operator()() const
-  {
-    XBT_INFO("Start executing task %d with computation amount %d", taskId, computationCost);
-    double clock_sta = simgrid::s4u::Engine::get_clock();
-    simgrid::s4u::this_actor::execute(computationCost);
-    double clock_end = simgrid::s4u::Engine::get_clock();
-    XBT_INFO("Done task %d in %f seconds.", taskId, clock_end - clock_sta);
-  }
-};
 
 /* Here comes the main function of your program */
 int main(int argc, char** argv)

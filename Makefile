@@ -1,5 +1,5 @@
 CC=g++
-OBJECTS=main.o
+OBJECTS=main.o Task.o
 DEPENDENCIES=Makefile
 CFLAGS=-I/opt/simgrid/include
 EXECUTABLE_NAME=main
