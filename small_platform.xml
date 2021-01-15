@@ -6,10 +6,10 @@
 
     <host id="Tremblay" speed="0.98095Mf"/>
     <host id="Jupiter" speed="0.76296Mf"/>
-    <!-- <host id="Fafard" speed="76.296Mf"/>
+    <host id="Fafard" speed="76.296Mf"/>
     <host id="Ginette" speed="48.492Mf"/>
     <host id="Bourassa" speed="48.492Mf"/>
     <host id="Jacquelin" speed="137.333Mf"/>
-    <host id="Boivin" speed="98.095Mf"/> -->
+    <host id="Boivin" speed="98.095Mf"/>
   </zone>
 </platform>
