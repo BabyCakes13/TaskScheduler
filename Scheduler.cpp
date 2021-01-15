@@ -2,6 +2,7 @@
 
 #include <simgrid/s4u.hpp>
 #include <iostream>
+#include "simgrid/s4u/VirtualMachine.hpp"
 
 XBT_LOG_EXTERNAL_DEFAULT_CATEGORY(logger);
 
@@ -12,7 +13,12 @@ void Scheduler::scheduleTask(Task task) {
              task.id(), task.computationCost());
 
     s4u_Host* host = hosts.get(0);
-    simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", host, task);
+
+    auto* vm0 = new simgrid::s4u::VirtualMachine(std::to_string(task.id()) + "_vm", host, 1);
+    vm0->start();
+    simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm0, task);
+    actor->join();
+    vm0->destroy();
 }
 
 Scheduler* Scheduler::getScheduler() {
