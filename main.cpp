@@ -18,6 +18,7 @@
  */
 
 #include <simgrid/s4u.hpp>
+#include "simgrid/s4u/VirtualMachine.hpp"
 #include <string>
 #include <cstdlib>
 #include <sstream>
@@ -46,27 +47,30 @@ public:
     taskId = rand();
   }
 
-  void operator()() const /* This is the main code of the actor */
+  void operator()() const
   {
     XBT_INFO("Start executing task %d with computation amount %d", taskId, computationCost);
+    double clock_sta = simgrid::s4u::Engine::get_clock();
     simgrid::s4u::this_actor::execute(computationCost);
-    XBT_INFO("Done: %d", taskId);
+    double clock_end = simgrid::s4u::Engine::get_clock();
+    XBT_INFO("Done task %d in %f seconds.", taskId, clock_end - clock_sta);
   }
 };
 
 /* Here comes the main function of your program */
 int main(int argc, char** argv)
 {
-  /* When your program starts, you have to first start a new simulation engine, as follows */
   simgrid::s4u::Engine e(&argc, argv);
 
-  /* Then you should load a platform file, describing your simulated platform */
   e.load_platform("small_platform.xml");
-  e.register_actor<Task>("task");
 
-  e.load_deployment("tasks.xml");
+  s4u_Host* pm0 = simgrid::s4u::Host::by_name("Fafard");
+  auto* vm0 = new simgrid::s4u::VirtualMachine("VM0", pm0, 1);
 
-  /* Once every actors are started in the engine, the simulation can start */
+  vm0->start();
+  simgrid::s4u::Actor::create("task", pm0, Task(999));
+  vm0->destroy();
+
   e.run();
 
   /* Once the simulation is done, the program is ended */
