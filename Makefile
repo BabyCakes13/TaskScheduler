@@ -1,5 +1,5 @@
 CC=g++
-OBJECTS=main.o Task.o
+OBJECTS=main.o Task.o Hosts.o
 DEPENDENCIES=Makefile
 CFLAGS=-g -I/usr/local/include
 EXECUTABLE_NAME=main

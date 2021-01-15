@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <sstream>
 #include "Task.h"
+#include "Hosts.h"
 
 XBT_LOG_NEW_DEFAULT_CATEGORY(logger, "The logging channel used in this example.");
 
@@ -35,6 +36,10 @@ int main(int argc, char** argv) {
   simgrid::s4u::Actor::create("master_", simgrid::s4u::Host::by_name("Fafard"), master_main);
   e.run();
   XBT_INFO("Total Simulation time %f", e.get_clock());
+
+  Hosts hosts = Hosts(e);
+  hosts.print();
+
   return 0;
 }
 
