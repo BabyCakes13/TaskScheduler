@@ -26,22 +26,26 @@
 
 XBT_LOG_NEW_DEFAULT_CATEGORY(logger, "The logging channel used in this example.");
 
+static void master_main();
+
 /* Here comes the main function of your program */
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
   simgrid::s4u::Engine e(&argc, argv);
-
   e.load_platform("small_platform.xml");
-
-  s4u_Host* pm0 = simgrid::s4u::Host::by_name("Fafard");
-  auto* vm0 = new simgrid::s4u::VirtualMachine("VM0", pm0, 1);
-
-  vm0->start();
-  simgrid::s4u::Actor::create("task", pm0, Task(999));
-  vm0->destroy();
-
+  simgrid::s4u::Actor::create("master_", simgrid::s4u::Host::by_name("Fafard"), master_main);
   e.run();
-
-  /* Once the simulation is done, the program is ended */
+  XBT_INFO("Total Simulation time %f", e.get_clock());
   return 0;
+}
+
+static void master_main()
+{
+  s4u_Host* pm0 = simgrid::s4u::Host::by_name("Fafard");
+  auto task = Task(99999999);
+
+  auto* vm0 = new simgrid::s4u::VirtualMachine("VM0", pm0, 1);
+  vm0->start();
+  simgrid::s4u::ActorPtr actor = simgrid::s4u::Actor::create("task", vm0, task);
+  actor->join();
+  vm0->destroy();
 }

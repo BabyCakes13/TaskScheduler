@@ -1,7 +1,7 @@
 CC=g++
 OBJECTS=main.o Task.o
 DEPENDENCIES=Makefile
-CFLAGS=-I/opt/simgrid/include
+CFLAGS=-g -I/usr/local/include
 EXECUTABLE_NAME=main
 LDFLAGS=-lsimgrid
 
